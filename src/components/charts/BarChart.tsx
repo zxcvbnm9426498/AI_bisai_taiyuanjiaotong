@@ -4,6 +4,88 @@ import { useEffect, useRef, useState } from 'react';
 import * as echarts from 'echarts';
 import { getRoadTypeTrafficData } from '@/services/amapService';
 
+// 修改EChartsOptionType定义，添加itemStyle属性
+interface EChartsOptionType {
+  color: string[];
+  tooltip: {
+    trigger: string;
+    axisPointer: {
+      type: string;
+    };
+  };
+  grid: {
+    left: string;
+    right: string;
+    bottom: string;
+    top: string;
+    containLabel: boolean;
+  };
+  legend: {
+    data: string[];
+    textStyle: {
+      color: string;
+    };
+    icon: string;
+    right: string;
+  };
+  xAxis: {
+    type: string;
+    data: string[];
+    axisTick: {
+      show: boolean;
+    };
+    axisLine: {
+      lineStyle: {
+        color: string;
+      };
+    };
+    axisLabel: {
+      color: string;
+    };
+  };
+  yAxis: {
+    type: string;
+    splitLine: {
+      lineStyle: {
+        color: string;
+      };
+    };
+    axisTick: {
+      show: boolean;
+    };
+    axisLine: {
+      lineStyle: {
+        color: string;
+      };
+    };
+    axisLabel: {
+      color: string;
+    };
+  };
+  series: Array<{
+    name: string;
+    type: string;
+    data: number[];
+    barWidth: string;
+    itemStyle?: {
+      normal?: {
+        color?: string | {
+          type: string;
+          x: number;
+          y: number;
+          x2: number;
+          y2: number;
+          colorStops: Array<{
+            offset: number;
+            color: string;
+          }>;
+          global: boolean;
+        };
+      };
+    };
+  }>;
+}
+
 export default function BarChart() {
   const chartRef = useRef<HTMLDivElement>(null);
   const [data, setData] = useState<{
@@ -101,13 +183,13 @@ export default function BarChart() {
   useEffect(() => {
     fetchRealTimeData();
     
-    // 每10分钟更新一次数据
+    // 每5分钟更新一次数据
     const timer = setInterval(() => {
       fetchRealTimeData();
-    }, 600000); // 10分钟
+    }, 300000);
     
     return () => clearInterval(timer);
-  }, []);
+  }, [fetchRealTimeData]); // 添加fetchRealTimeData作为依赖项
   
   useEffect(() => {
     if (!chartRef.current || !data.days.length) return;
@@ -152,7 +234,7 @@ export default function BarChart() {
               color: colors[index][1]
             }]
           }
-        } as any; // 使用any类型避免ECharts类型定义问题
+        } as EChartsOptionType['series'][0]['itemStyle'];
       }
     });
     

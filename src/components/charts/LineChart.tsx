@@ -90,13 +90,13 @@ export default function LineChart() {
   useEffect(() => {
     fetchRealTimeData();
     
-    // 每5分钟更新一次数据，模拟实时性
+    // 每5分钟更新一次数据
     const timer = setInterval(() => {
       fetchRealTimeData();
-    }, 300000); // 5分钟更新
+    }, 300000);
     
     return () => clearInterval(timer);
-  }, []);
+  }, [fetchRealTimeData]);
   
   useEffect(() => {
     if (!chartRef.current || chartData.hours.length === 0) return;

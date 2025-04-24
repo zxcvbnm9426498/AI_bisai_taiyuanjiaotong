@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getTrafficEvents, getRoadTrafficInfo } from '@/services/amapService';
+import { getTrafficEvents } from '@/services/amapService';
 
 // 定义道路数据类型
 interface RoadData {
@@ -86,7 +86,7 @@ export default function StatusTable() {
         ];
         
         // 合并实际数据和默认数据，确保有足够的数据显示
-        let combinedData = [...roadDataItems];
+        const combinedData = [...roadDataItems];
         
         // 如果实际数据不足10条，补充默认数据
         for (let i = 0; combinedData.length < 10 && i < defaultRoads.length; i++) {

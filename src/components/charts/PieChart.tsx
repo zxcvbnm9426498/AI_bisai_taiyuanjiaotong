@@ -52,10 +52,10 @@ export default function PieChart() {
     // 每5分钟更新一次数据
     const timer = setInterval(() => {
       fetchRealTimeData();
-    }, 300000); // 5分钟
+    }, 300000);
     
     return () => clearInterval(timer);
-  }, []);
+  }, [fetchRealTimeData]);
   
   useEffect(() => {
     if (!chartRef.current || data.length === 0) return;

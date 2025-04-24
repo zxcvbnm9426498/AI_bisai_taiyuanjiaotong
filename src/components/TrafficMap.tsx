@@ -90,6 +90,28 @@ const mapViews = [
   { name: '城东区域视角', center: [112.568879, 37.87559], zoom: 14.5, pitch: 45 }
 ];
 
+interface MapEvent {
+  lnglat: [number, number];
+  type: string;
+  target: unknown;
+}
+
+interface Marker {
+  setPosition: (position: [number, number]) => void;
+  setLabel: (options: {content: string}) => void;
+  setIcon: (options: {size: [number, number], imageOffset: [number, number], image: string}) => void;
+}
+
+interface Path {
+  path: [number, number][];
+}
+
+interface Animation {
+  start: () => void;
+  resume: () => void;
+  pause: () => void;
+}
+
 export default function TrafficMap() {
   const mapRef = useRef<any>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -492,8 +514,8 @@ export default function TrafficMap() {
         
         // 设置车辆移动动画
         let currentSegment = segment;
-        let moveToNext = true;
-        let speed = road.level === 'high' ? 100 : (road.level === 'medium' ? 200 : 300); // 速度基于拥堵程度
+        const moveToNext = true;
+        const speed = road.level === 'high' ? 100 : (road.level === 'medium' ? 200 : 300); // 速度基于拥堵程度
         
         const moveVehicle = () => {
           if (!mapRef.current) return;
@@ -550,7 +572,7 @@ export default function TrafficMap() {
       if (point.level === 'low') return;
       
       // 设置脉动圆圈的颜色
-      let circleColor = point.level === 'high' ? '#ff5757' : '#ff9800';
+      const circleColor = point.level === 'high' ? '#ff5757' : '#ff9800';
       
       // 自定义脉动点样式
       const pulseMarker = new AMap.Marker({
@@ -586,16 +608,16 @@ export default function TrafficMap() {
     accidents.forEach(accident => {
       // 根据严重程度设置不同样式
       const severity = accident.severity;
-      let iconUrl = 'https://a.amap.com/jsapi_demos/static/demo-center/icons/roadwork.png';
-      let iconSize = new AMap.Size(32, 32);
+      const iconUrl = 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png';
+      const iconSize = [25, 31];
       
       // 创建事故标记
       const marker = new AMap.Marker({
         position: accident.position,
         icon: new AMap.Icon({
-          size: iconSize,
+          size: new AMap.Size(...iconSize),
           image: iconUrl,
-          imageSize: iconSize
+          imageSize: new AMap.Size(...iconSize)
         }),
         offset: new AMap.Pixel(-16, -16),
         zIndex: 120,
@@ -770,7 +792,7 @@ export default function TrafficMap() {
     });
     
     // 随机更新事故点
-    let updatedAccidents = [...accidentPoints];
+    const updatedAccidents = [...accidentPoints];
     
     // 10%的概率清除最旧的事故
     if (updatedAccidents.length > 0 && Math.random() < 0.1) {

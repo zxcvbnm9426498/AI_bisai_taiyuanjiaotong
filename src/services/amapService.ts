@@ -352,14 +352,16 @@ export async function getRoadTypeTrafficData() {
   }
 }
 
-// 导出所有服务函数
-export default {
+// 修改匿名默认导出
+const amapService = {
+  getTrafficEvents,
   getCityTrafficInfo,
   getRectangleTrafficInfo,
   getRoadTrafficInfo,
   getDistrictInfo,
-  getTrafficEvents,
   get24HourTrend,
   getDistrictTrafficDistribution,
   getRoadTypeTrafficData
-}; 
+};
+
+export default amapService; 
