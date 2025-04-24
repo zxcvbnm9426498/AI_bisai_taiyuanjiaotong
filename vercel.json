@@ -1,0 +1,5 @@
+{
+  "name": "traffic-monitoring-dashboard",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install"
+} 

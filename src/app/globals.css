@@ -1,26 +1,48 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary-blue: #0066cc;
+  --accent-blue: #00a8ff;
+  --bg-dark: #020924;
+  --border-glow: #1e90ff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply bg-[#020924] text-[#ffffff];
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .tech-card {
+    @apply relative bg-[rgba(2,9,36,0.7)] border border-[#1e3c68] rounded-md overflow-hidden backdrop-blur-sm;
+  }
+  
+  .tech-card::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#1e90ff] to-transparent opacity-70;
+  }
+  
+  .tech-card::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#1e90ff] to-transparent opacity-40;
+  }
+  
+  .tech-header {
+    @apply py-1 px-3 text-sm font-semibold bg-gradient-to-r from-[#041836] to-[#0c2c5c] border-b border-[#1e3c68];
+  }
+  
+  .blue-glow {
+    @apply shadow-[0_0_10px_rgba(30,144,255,0.5)];
+  }
+  
+  .number-highlight {
+    @apply text-[#00a8ff] font-bold text-xl;
+  }
+  
+  .grid-panel {
+    @apply grid gap-3 p-3;
+  }
 }

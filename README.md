@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<!--
+ * @Author: 择安网络
+ * @Code function: 
+ * @Date: 2025-04-23 22:19:05
+ * @FilePath: /ai大赛项目/traffic-monitoring-dashboard/README.md
+ * @LastEditTime: 2025-04-24 08:59:43
+-->
+# 智能城市交通监控预警平台
 
-## Getting Started
+基于 Next.js 和 ECharts 开发的城市交通监控预警平台前端，适合在 Vercel 上部署。
 
-First, run the development server:
+## 功能特点
+
+- 数据可视化大屏展示
+- 太原市交通实时监控（需配置高德地图API）
+- 拥堵路段分析与统计
+- 交通指数趋势分析
+- 全国城市拥堵对比
+
+## 技术栈
+
+- Next.js 14
+- TypeScript
+- Tailwind CSS 
+- ECharts
+- 高德地图 API
+
+## 本地开发
+
+```bash
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+
+# 构建生产版本
+npm run build
+
+# 启动生产服务器
+npm start
+```
+
+## 配置高德地图
+
+项目使用环境变量来存储高德地图API密钥，避免将密钥直接硬编码在代码中。
+
+1. 在项目根目录创建 `.env.local` 文件（这个文件不会被提交到版本控制系统）
+2. 添加以下内容，将 "你的高德地图API密钥" 替换为你的实际密钥：
+
+```
+NEXT_PUBLIC_AMAP_KEY=你的高德地图API密钥
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+3. 重新启动开发服务器以加载环境变量：
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 部署到 Vercel
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+此项目可以直接部署到 Vercel 平台。在 Vercel 中导入此 GitHub 仓库即可自动构建和部署。
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+部署时，需要在 Vercel 项目设置中添加环境变量 `NEXT_PUBLIC_AMAP_KEY`。
 
-## Learn More
+## 定制化
 
-To learn more about Next.js, take a look at the following resources:
+- 界面风格：修改 `/src/app/global.css` 中的颜色变量
+- 数据源：修改图表组件中的静态数据，或连接到实际 API
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 许可证
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
