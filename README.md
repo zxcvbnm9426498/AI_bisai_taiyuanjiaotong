@@ -16,6 +16,22 @@
 - 拥堵路段分析与统计
 - 交通指数趋势分析
 - 全国城市拥堵对比
+- **新增:** 路线拥堵查询与AI智能建议（基于DeepSeek API）
+
+## 发布说明
+
+### v0.2.0 (2025-04-30)
+
+- **新增功能**:
+  - 路线拥堵查询组件，支持起点终点搜索
+  - 集成DeepSeek API提供智能出行建议
+  - AI建议支持流式输出，实时展示推荐内容
+  - 提供备选路线、最佳出行时间、出行方式和安全提示
+
+- **改进**:
+  - 优化界面交互体验
+  - 增强错误处理和回退机制
+  - 提升组件加载性能
 
 ## 技术栈
 
@@ -24,6 +40,7 @@
 - Tailwind CSS 
 - ECharts
 - 高德地图 API
+- DeepSeek AI API
 
 ## 本地开发
 
@@ -59,11 +76,23 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 npm run dev
 ```
 
+## 配置DeepSeek AI
+
+为使用AI智能建议功能，需配置DeepSeek API密钥:
+
+1. 在 `.env.local` 文件中添加:
+
+```
+NEXT_PUBLIC_DEEPSEEK_API_KEY=你的DeepSeek API密钥
+```
+
+2. 或直接在 `src/components/RouteSearch.tsx` 文件中更新 `DEEPSEEK_API_KEY` 常量
+
 ## 部署到 Vercel
 
 此项目可以直接部署到 Vercel 平台。在 Vercel 中导入此 GitHub 仓库即可自动构建和部署。
 
-部署时，需要在 Vercel 项目设置中添加环境变量 `NEXT_PUBLIC_AMAP_KEY`。
+部署时，需要在 Vercel 项目设置中添加环境变量 `NEXT_PUBLIC_AMAP_KEY` 和 `NEXT_PUBLIC_DEEPSEEK_API_KEY`。
 
 ## 定制化
 
