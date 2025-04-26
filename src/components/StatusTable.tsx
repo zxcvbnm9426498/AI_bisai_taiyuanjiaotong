@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { getTrafficEvents } from '@/services/amapService';
+import baiduMapService from '@/services/baiduMapService';
 
 // 定义道路数据类型
 interface RoadData {
@@ -32,8 +33,13 @@ export default function StatusTable() {
       try {
         setLoading(true);
         
-        // 获取交通事件数据
-        const eventsData = await getTrafficEvents();
+        // 尝试使用百度地图服务
+        let eventsData = await baiduMapService.getTrafficEvents();
+        
+        // 如果百度地图服务失败，尝试使用高德地图服务
+        if (!eventsData) {
+          eventsData = await getTrafficEvents();
+        }
         
         if (!eventsData) {
           throw new Error('获取交通事件数据失败');
@@ -73,16 +79,16 @@ export default function StatusTable() {
         
         // 如果数据不足10条，补充一些模拟数据
         const defaultRoads = [
-          { id: 'r1', name: '迎泽', district: '迎泽区', level: 90 },
-          { id: 'r2', name: '南内环', district: '小店区', level: 87 },
-          { id: 'r3', name: '龙城', district: '尖草坪区', level: 85 },
-          { id: 'r4', name: '晋阳街', district: '高新区', level: 83 },
-          { id: 'r5', name: '新建路', district: '杏花岭区', level: 77 },
-          { id: 'r6', name: '长风街', district: '万柏林区', level: 75 },
-          { id: 'r7', name: '马练营', district: '小店区', level: 72 },
-          { id: 'r8', name: '滨河东路', district: '杏花岭区', level: 70 },
-          { id: 'r9', name: '府西街', district: '迎泽区', level: 68 },
-          { id: 'r10', name: '康乐街', district: '杏花岭区', level: 65 },
+          { id: 'r1', name: '长安街', district: '东城区', level: 90 },
+          { id: 'r2', name: '建国路', district: '朝阳区', level: 87 },
+          { id: 'r3', name: '三环路', district: '海淀区', level: 85 },
+          { id: 'r4', name: '四环路', district: '朝阳区', level: 83 },
+          { id: 'r5', name: '北三环', district: '海淀区', level: 77 },
+          { id: 'r6', name: '南二环', district: '西城区', level: 75 },
+          { id: 'r7', name: '东直门', district: '东城区', level: 72 },
+          { id: 'r8', name: '西直门', district: '西城区', level: 70 },
+          { id: 'r9', name: '建外大街', district: '朝阳区', level: 68 },
+          { id: 'r10', name: '阜成路', district: '海淀区', level: 65 },
         ];
         
         // 合并实际数据和默认数据，确保有足够的数据显示
@@ -116,16 +122,16 @@ export default function StatusTable() {
     // 回退到模拟数据的函数
     const fallbackToSimulatedData = () => {
       setRoads([
-        { id: 1, name: '迎泽', district: '迎泽区', level: 90 },
-        { id: 2, name: '南内环', district: '小店区', level: 87 },
-        { id: 3, name: '龙城', district: '尖草坪区', level: 85 },
-        { id: 4, name: '晋阳街', district: '高新区', level: 83 },
-        { id: 5, name: '新建路', district: '杏花岭区', level: 77 },
-        { id: 6, name: '长风街', district: '万柏林区', level: 75 },
-        { id: 7, name: '马练营', district: '小店区', level: 72 },
-        { id: 8, name: '滨河东路', district: '杏花岭区', level: 70 },
-        { id: 9, name: '府西街', district: '迎泽区', level: 68 },
-        { id: 10, name: '康乐街', district: '杏花岭区', level: 65 },
+        { id: 1, name: '长安街', district: '东城区', level: 90 },
+        { id: 2, name: '建国路', district: '朝阳区', level: 87 },
+        { id: 3, name: '三环路', district: '海淀区', level: 85 },
+        { id: 4, name: '四环路', district: '朝阳区', level: 83 },
+        { id: 5, name: '北三环', district: '海淀区', level: 77 },
+        { id: 6, name: '南二环', district: '西城区', level: 75 },
+        { id: 7, name: '东直门', district: '东城区', level: 72 },
+        { id: 8, name: '西直门', district: '西城区', level: 70 },
+        { id: 9, name: '建外大街', district: '朝阳区', level: 68 },
+        { id: 10, name: '阜成路', district: '海淀区', level: 65 },
       ]);
     };
     

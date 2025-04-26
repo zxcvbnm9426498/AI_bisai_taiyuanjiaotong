@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>高德地图API测试</title>
+    <style>
+        html, body, #map-container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #status {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border-radius: 4px;
+            z-index: 9999;
+        }
+        .success {
+            color: #4CAF50;
+        }
+        .error {
+            color: #F44336;
+        }
+    </style>
+</head>
+<body>
+    <div id="status">测试中...</div>
+    <div id="map-container"></div>
+
+    <script>
+        // 在这里填入您的API密钥和安全密钥
+        const API_KEY = '56d83b89d96ccdf078d145c6189a7e18'; // 替换为您的高德地图API密钥
+        const SECURITY_CODE = 'e4505ebd721ba7edbc6ea79b177a70b4'; // 替换为您的安全密钥(如果有)
+
+        const statusDiv = document.getElementById('status');
+
+        // 设置安全密钥(如果有)
+        if (SECURITY_CODE) {
+            window._AMapSecurityConfig = {
+                securityJsCode: SECURITY_CODE
+            };
+        }
+
+        function updateStatus(message, isError = false) {
+            statusDiv.innerHTML = message;
+            statusDiv.className = isError ? 'error' : 'success';
+        }
+
+        function initMap() {
+            if (!API_KEY) {
+                updateStatus('错误: 请先填入您的API密钥', true);
+                return;
+            }
+
+            updateStatus('正在加载高德地图API...');
+
+            // 动态加载高德地图API
+            const script = document.createElement('script');
+            script.src = `https://webapi.amap.com/maps?v=2.0&key=${API_KEY}&callback=onMapLoaded`;
+            script.onerror = () => {
+                updateStatus('错误: 无法加载高德地图API脚本', true);
+            };
+            document.head.appendChild(script);
+        }
+
+        // 地图加载回调函数
+        window.onMapLoaded = function() {
+            try {
+                updateStatus('API脚本已加载，初始化地图...');
+                
+                // 创建地图实例
+                const map = new AMap.Map('map-container', {
+                    zoom: 11,
+                    center: [116.397428, 39.90923],  // 默认北京
+                    viewMode: '2D'
+                });
+
+                // 添加基本控件
+                map.plugin(['AMap.ToolBar'], function() {
+                    map.addControl(new AMap.ToolBar());
+                });
+
+                // 地图加载完成回调
+                map.on('complete', function() {
+                    updateStatus('成功: 地图加载完成! API密钥工作正常');
+                    
+                    // 测试交通层
+                    try {
+                        const trafficLayer = new AMap.TileLayer.Traffic({
+                            zIndex: 10
+                        });
+                        map.add(trafficLayer);
+                        updateStatus('成功: 地图和交通层加载完成! API密钥工作正常');
+                    } catch (e) {
+                        updateStatus('地图加载成功，但交通层加载失败: ' + e.message, true);
+                    }
+                });
+            } catch (error) {
+                updateStatus('错误: 初始化地图失败: ' + error.message, true);
+                console.error(error);
+            }
+        };
+
+        // 启动初始化
+        initMap();
+    </script>
+</body>
+</html>
